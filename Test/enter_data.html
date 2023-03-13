@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Enter Data</title>
+  </head>
+
+  <body>
+    <header>
+      <nav>
+        <div class="left">
+          <ul>
+            <li><a class="logo" href="index.html">Over-Stat</a></li>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="enter_data.html">Enter Data</a></li>
+            <li><a href="your_data.html">Your Data</a></li>
+            <li><a href="about.html">About</a></li>
+          </ul>
+        </div>
+        <div class="login right">
+          <ul>
+            <li><a href="#services">Login</a></li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+  
+
+    <!-- This is where Data form will go-->
+    <div class = "data-form">
+    <form action="">
+      <div class="center">
+        <label>
+          Number of Matches:
+          <input type="number" id="match-quantity" name="match-quantity" min="1" max="20" value="1">
+        </label>
+      </div>
+      <div class = "match">
+      <div>
+        <h2>Match 1:</h2>
+      </div>
+      <div>
+      <label>Select Role:</label>
+        <label>
+          Tank
+          <input type="radio" name="role" id="role-select" value="T">
+          
+        </label>
+        <label>
+          Damage
+          <input type="radio" name="role" id="role-select" value="D">
+          
+        </label>
+        <label>
+          Support
+          <input type="radio" name="role" id="role-select" value="S">
+          
+        </label>
+      </div>
+      <div>
+        <label for="time-input">Enter the time in military format:</label>
+        <input type="time" id="text" name="time">
+      </div>
+      
+
+      <div>
+        <label>Win or Loss:</label>
+        <label>
+          <label>
+            Win
+            <input type="radio" name="win/loss" id="win/loss" value="W">
+          </label>
+          <label>
+            Loss
+            <input type="radio" name="win/loss" id="win/loss" value="L">
+          </label>
+        </div>
+          
+        </label>
+
+  </div>
+<div class="match">
+  <div>
+    <h2>Match 2:</h2>
+  </div>
+  <div>
+  <label>Select Role:</label>
+    <label>
+      Tank
+      <input type="radio" name="role" id="role-select" value="T">
+      
+    </label>
+    <label>
+      Damage
+      <input type="radio" name="role" id="role-select" value="D">
+      
+    </label>
+    <label>
+      Support
+      <input type="radio" name="role" id="role-select" value="S">
+      
+    </label>
+  </div>
+  <div>
+    <label for="time-input">Enter the time in military format:</label>
+    <input type="time" id="text" name="time">
+  </div>
+  
+
+  <div>
+    <label>Win or Loss:</label>
+    <label>
+      <label>
+        Win
+        <input type="radio" name="win/loss" id="win/loss" value="W">
+      </label>
+      <label>
+        Loss
+        <input type="radio" name="win/loss" id="win/loss" value="L">
+      </label>
+    </div>
+      
+    </label>
+
+</div>
+</form>
+</div>
+
+  
+    <footer>
+      <div class="left">
+        <ul>
+          <li><a class="logo" href="index.html">Over-Stat</a></li>
+          <li><a href="enter_data.html">Enter Data</a></li>
+          <li><a href="your_data.html">Your Data</a></li>
+          <li><a href="about.html">About</a></li>
+          </ul>
+    </div>
+    <div class="right">
+      <ul>
+        <li">Copywrite</li>
+      </ul>
+    </div>
+    </footer>
+    
+    <script src="script.js"></script>
+  </body>
+</html>
