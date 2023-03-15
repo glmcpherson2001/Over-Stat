@@ -273,6 +273,13 @@ footer ul li {
   flex-direction: column;
 }
 
+.banner h1{
+  text-align: center;
+}
+ .banner h2 {
+  text-align: center;
+ }
+ 
 .team-section{
   display: flex;
   justify-content: space-around;
