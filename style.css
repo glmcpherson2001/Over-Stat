@@ -252,7 +252,8 @@ footer ul li {
 /*-----------Defaults--------------*/
 * {
   text-decoration: none;
-  font-family: sans-serif;
+  font-family: OverWatch;
+  src: url(FontPacks/OVERWATCH.ttf);
   color: black;
 }
 
@@ -272,6 +273,13 @@ footer ul li {
   display: flex;
   flex-direction: column;
 }
+
+.banner h1{
+  text-align: center;
+}
+ .banner h2 {
+  text-align: center;
+ }
 
 .team-section{
   display: flex;
