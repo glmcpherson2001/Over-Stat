@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-overstat-dev-143906-authRole",
+      "UnauthRoleArn": "arn:aws:iam::139646856512:role/amplify-overstat-dev-143906-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::139646856512:role/amplify-overstat-dev-143906-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-overstat-dev-143906-deployment",
+      "UnauthRoleName": "amplify-overstat-dev-143906-unauthRole",
+      "StackName": "amplify-overstat-dev-143906",
+      "StackId": "arn:aws:cloudformation:us-east-1:139646856512:stack/amplify-overstat-dev-143906/89cc5010-ca7b-11ed-a605-122ea6edcaa9",
+      "AmplifyAppId": "d3ch3q7jdcx84q"
+    }
+  }
+}
