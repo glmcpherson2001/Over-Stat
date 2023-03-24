@@ -61,18 +61,6 @@ function getRoute(routePath, data) {
     });
 }
 
-/* router.get(/^\/(index)?$/, (req, res) => {
-
-    const data = {
-    damageWinRate : '2:00pm',
-    tankWinRate : '1:00pm',
-    supportWinRate :'3:00am'
-    }
-
-    res.render('index', data);
-});
- */
-
 getRoute('', {
     damageWinRate : '2:00pm',
     tankWinRate : '1:00pm',
@@ -97,7 +85,7 @@ app.use('enter_data', router);
 
 
 
-const port = process.env.PORT || 3000; 
+const port = process.env.PORT || 80; 
 
 app.listen(port, () => {
     console.log('Server started on port 8080');
