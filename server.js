@@ -34,7 +34,6 @@ async function signUp(username, password, email) {
     }
   };
 
-  signUp('Test', 'FakePassword123@', 'glmcpherson2001@gmail.com');
 
 // Sign in function
 async function signIn(username, password) {
@@ -97,6 +96,9 @@ app.use('/', router);
 app.use('enter_data', router);
 
 
-app.listen(8080, () => {
+
+const port = process.env.PORT || 3000; 
+
+app.listen(port, () => {
     console.log('Server started on port 8080');
 });
