@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon dev",
-    "build": "node server.js"
+    "build": "tsc",
+    "start": "node server.js"
   },
   "author": "Grant McPherson, Domininc Thoele",
   "license": "ISC",
