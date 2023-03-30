@@ -6,8 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon dev",
-    "build": "tsc",
-    "start": "nvm use && node server.js"
+    "build": "npm install",
+    "start": "npm install && node server.js"
   },
   "author": "Grant McPherson, Domininc Thoele",
   "license": "ISC",
