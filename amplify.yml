@@ -6,7 +6,8 @@ frontend:
         - npm install
     
     postBuild:
-      - node server.js
+      commands:
+        - node server.js
   artifacts:
     baseDirectory: /build
     files:
