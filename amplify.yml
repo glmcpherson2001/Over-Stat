@@ -1,12 +1,14 @@
 version: 1
 frontend:
   phases:
+    preBuld:
+      commands:
+        - npm install
     build:
       commands:
-        - npm install --no-audit
         - npm run build
   artifacts:
-    baseDirectory: /build
+    baseDirectory: /views
     files:
       - "**/*"
   cache:
