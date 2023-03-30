@@ -85,7 +85,7 @@ app.use('enter_data', router);
 
 
 
-const port = process.env.PORT || 80; 
+const port = 3000;
 
 app.listen(port, () => {
     console.log('Server started on port 8080');

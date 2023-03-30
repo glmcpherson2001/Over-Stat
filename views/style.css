@@ -251,12 +251,14 @@ footer ul li {
 
 /*-----------Defaults--------------*/
 * {
-  text-decoration: none;
-  font-family: OverWatch;
-  src: url(FontPacks/OVERWATCH.ttf);
+  font-style: italic;
+  font-family: 'bignoodle', sans-serif;
   color: black;
 }
-
+@font-face{
+  font-family: 'bignoodle';
+  src: url(FontPacks/big_noodle_titling.ttf);
+}
 .center{
   display: flex;
   justify-content: center;
