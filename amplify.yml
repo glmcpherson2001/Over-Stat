@@ -3,12 +3,25 @@ frontend:
   phases:
     build:
       commands:
-        - npm install
   artifacts:
-    baseDirectory: /build
+    baseDirectory: 
     files:
       - '**/*'
   cache:
     paths: []
+backend:
+  phases:
+    build:
+      commands:
+        - npm install
+    postBuild:
+      commands:
+        - node server.js
+  artifacts:
+    baseDirectory: 
+    files:
+      - '**/*'
+  cache:
+    paths: []
+  
 
-startCommand : node server.js
