@@ -4,7 +4,9 @@ frontend:
     build:
       commands:
         - npm install
-        - npm run start
+    
+    postBuild:
+      - node server.js
   artifacts:
     baseDirectory: /build
     files:
