@@ -3,6 +3,7 @@ frontend:
   phases:
     build:
       commands:
+        - npm install
   artifacts:
     baseDirectory: /
     files:
@@ -13,10 +14,8 @@ backend:
   phases:
     build:
       commands:
-        - npm install
     postBuild:
       commands:
-        - node server.js
   artifacts:
     baseDirectory: /
     files:
