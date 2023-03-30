@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "dev": "nodemon dev",
-    "build": "npm cache clear --force && npm install",
+    "build": "node server.js",
     "start": "node server.js"
   },
   "author": "Grant McPherson, Domininc Thoele",
