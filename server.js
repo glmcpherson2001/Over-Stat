@@ -87,6 +87,10 @@ app.use('enter_data', router);
 
 const port = process.env.PORT || 80; 
 
-app.listen(port, () => {
-    console.log('Server started on port ' + port);
-});
+
+exports.handler = (event, context) => {
+  const server = app.listen(0, () => {
+    const { port } = server.address();
+    console.log(`Express server listening on port ${port}`);
+  });
+};
