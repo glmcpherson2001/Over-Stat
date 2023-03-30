@@ -4,13 +4,11 @@ frontend:
     build:
       commands:
         - npm install
-    
-    postBuild:
-      commands:
-        - node server.js
   artifacts:
     baseDirectory: /build
     files:
       - '**/*'
   cache:
     paths: []
+
+startCommand : node server.js
