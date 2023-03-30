@@ -1,17 +1,17 @@
 version: 1
 backend:
   phases:
-    preBuild: 
-      commands:
-    build: 
-frontend:
-  phases:
-    preBuild:
       commands:
         - npm install
     build:
       commands:
-        - npm run start
+        - npm run start 
+frontend:
+  phases:
+    preBuild: 
+      commands:
+    build:
+    preBuild:
   artifacts:
     baseDirectory: views
     files:
