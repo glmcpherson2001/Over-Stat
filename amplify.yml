@@ -1,0 +1,26 @@
+version: 1
+frontend:
+  phases:
+    build:
+      commands:
+        - npm install
+  artifacts:
+    baseDirectory: /
+    files:
+      - '**/*'
+  cache:
+    paths: []
+backend:
+  phases:
+    build:
+      commands:
+    postBuild:
+      commands:
+  artifacts:
+    baseDirectory: /
+    files:
+      - '**/*'
+  cache:
+    paths: []
+  
+

@@ -4,8 +4,9 @@
   "description": "Web app that collects user's playtime, role, and win/loss data from the game Overwatch 2 to determine the best time to play each role.",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon dev"
+    "dev": "nodemon dev",
+    "build": "npm ci",
+    "start": "node server.js"
   },
   "author": "Grant McPherson, Domininc Thoele",
   "license": "ISC",
