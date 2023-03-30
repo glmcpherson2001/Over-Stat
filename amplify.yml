@@ -4,7 +4,7 @@ frontend:
     build:
       commands:
   artifacts:
-    baseDirectory: 
+    baseDirectory: /
     files:
       - '**/*'
   cache:
@@ -18,7 +18,7 @@ backend:
       commands:
         - node server.js
   artifacts:
-    baseDirectory: 
+    baseDirectory: /
     files:
       - '**/*'
   cache:
