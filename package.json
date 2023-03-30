@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon dev",
-    "build": "npm cache clear --force && npm install",
+    "build": " npm install",
     "start": "node server.js"
   },
   "author": "Grant McPherson, Domininc Thoele",
