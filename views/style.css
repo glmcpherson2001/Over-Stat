@@ -309,13 +309,15 @@ footer ul li {
   text-align: center;
   letter-spacing: 1px;
 }
-
+.team-section p{
+  padding-left: 8%;
+}
 .team-section img{
   width: 20vw
 }
 .Us-section{
   font-style: italic;
-  font-size: 20px;
+  font-size: 26px;
   display: flex;
   text-align: center;
   padding-left: 10px;
@@ -323,6 +325,7 @@ footer ul li {
 }
 .Us-section p{
   margin: 4vh;
+  font-size: 22px;
 }
 
 .team{
