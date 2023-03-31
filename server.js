@@ -85,7 +85,7 @@ app.use('enter_data', router);
 
 
 
-const port = 3000;
+const port = 80;
 
 
 
