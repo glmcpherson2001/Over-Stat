@@ -259,6 +259,7 @@ footer ul li {
   font-family: 'bignoodle';
   src: url(FontPacks/big_noodle_titling.ttf);
 }
+
 .center{
   display: flex;
   justify-content: center;

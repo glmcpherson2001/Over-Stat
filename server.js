@@ -85,10 +85,11 @@ app.use('enter_data', router);
 
 
 
-const port = 3000;
+const port = 8080;
+const host = '127.0.0.1';
 
 
 
-app.listen(port, () => {
-    console.log('Server started on port ' + port);
+app.listen(port, host, () => {
+    console.log(`Server running at http://${host}:${port}/`);
 });
