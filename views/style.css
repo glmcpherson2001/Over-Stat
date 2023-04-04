@@ -9,7 +9,7 @@ header {
   top: 1vh;
   padding: 0 0.2vh;
   position: sticky;
-  height: auto;
+  height: 0;
   margin: 0vh 0.5vh;
   z-index: 99;
 }
