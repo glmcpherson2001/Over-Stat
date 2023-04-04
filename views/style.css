@@ -147,8 +147,10 @@ footer ul li {
   margin: 0vh 0;
   padding: 0vh 0;
   box-sizing: border-box;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
 }
-
 
 .mySlides {
   display: flex;
@@ -206,13 +208,12 @@ footer ul li {
 /* On hover, add a black background color with a little bit see-through */
 .prev:hover,
 .next:hover {
-
 }
 
 /* Describes how Information will be shown */
 .slide-info {
   padding-top: 20vh;
- position: absolute;
+  position: absolute;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
   z-index: 3;
 }
@@ -224,7 +225,6 @@ footer ul li {
   font-style: italic;
   text-decoration: underline;
 }
-
 
 /* Fading animation */
 .fade {
@@ -255,15 +255,15 @@ footer ul li {
 /*-----------Defaults--------------*/
 * {
   font-style: italic;
-  font-family: 'bignoodle', sans-serif;
+  font-family: "bignoodle", sans-serif;
   color: black;
 }
-@font-face{
-  font-family: 'bignoodle';
+@font-face {
+  font-family: "bignoodle";
   src: url(FontPacks/big_noodle_titling.ttf);
 }
 
-.center{
+.center {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -273,14 +273,14 @@ footer ul li {
 
 /*-----------homepage--------------*/
 
-.index-section h1{
+.index-section h1 {
   font-style: italic;
   font-size: 50px;
   text-align: center;
   margin-bottom: 0%;
 }
 
-.index-section h2{
+.index-section h2 {
   font-style: italic;
   font-size: 28px;
   text-align: center;
@@ -290,13 +290,13 @@ footer ul li {
   padding-bottom: 4%;
 }
 
-.index-section h3{
+.index-section h3 {
   font-style: italic;
   font-style: oblique;
   font-size: 30px;
 }
 
-.index-section img{
+.index-section img {
   text-align: center;
 }
 
@@ -304,51 +304,51 @@ footer ul li {
 
 /*-----------About--------------*/
 
-.banner{
+.banner {
   display: flex;
   flex-direction: column;
 }
 
-.banner h1{
+.banner h1 {
   text-align: center;
   font-style: italic;
   font-size: 60px;
   padding-bottom: 5vh;
 }
-.Ourteam h1{
+.Ourteam h1 {
   font-style: italic;
   text-align: center;
   font-size: 60px;
   padding-bottom: 0vh;
   padding-top: 12vh;
- margin: 0%;
+  margin: 0%;
 }
- .banner h2 {
+.banner h2 {
   font-style: italic;
   text-align: center;
- }
+}
 
- .Ourteam h2 {
+.Ourteam h2 {
   font-style: italic;
   text-align: center;
   font-size: 48px;
   padding-bottom: 6vh;
   margin-top: 0%;
- }
-.team-section{
+}
+.team-section {
   font-style: italic;
   font-size: 45px;
   display: flex;
   text-align: center;
   letter-spacing: 1px;
 }
-.team-section p{
+.team-section p {
   padding-left: 8%;
 }
-.team-section img{
-  width: 20vw
+.team-section img {
+  width: 20vw;
 }
-.Us-section{
+.Us-section {
   font-style: italic;
   font-size: 26px;
   display: flex;
@@ -356,30 +356,27 @@ footer ul li {
   padding-left: 10px;
   letter-spacing: 0px;
 }
-.Us-section p{
+.Us-section p {
   margin: 4vh;
   font-size: 22px;
 }
 
-.team{
+.team {
   width: 40%;
 }
 
-.left{
+.left {
   float: left;
 }
 
-.right{
+.right {
   float: right;
 }
 
-
 /*---------About End--------------*/
 
-
-
 /*---------Enter Data--------------*/
-.data-form{
+.data-form {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -394,15 +391,14 @@ footer ul li {
   width: auto;
 }
 
-.match{
+.match {
   padding-bottom: 2vh;
   display: flex;
   flex-wrap: nowrap;
   flex-direction: column;
-
 }
 
-.match div{
+.match div {
   padding: 1vh;
 }
 /*---------Enter Data END--------------*/
