@@ -59,6 +59,7 @@ function getRoute(routePath, data) {
     router.get('/'+(routePath), (req, res) => {
         res.render(routePath, data); 
     });
+    console.log(routePath+"was requested")
 }
 
 getRoute('', {
@@ -73,6 +74,8 @@ getRoute('enter_data');
 getRoute('your_data');
 
 getRoute('about');
+
+getRoute('login');
 
 
 
