@@ -7,6 +7,15 @@
     <link rel="stylesheet" href="style.css" />
     <link rel="shortcut icon" type="image/png" href="images/Overstat Logo.png">
     <title>Enter Data</title>
+    <style>
+        header{
+          height: auto;
+        }
+
+        footer{
+          height: auto;
+        }
+    </style>
   </head>
 
   <body>
@@ -37,13 +46,14 @@
         <div class="center">
           <label>
             Number of Matches:
-            <input type="number" id="match-quantity" name="match-quantity" min="1" max="20"  onchange="addMatchForms()">
+            <input type="number" id="match-quantity" name="match-quantity" min="1" max="20" oninput="addMatchForms()">
           </label>
         </div>
         <div id="match-forms-container">
           <!-- generate match forms dynamically -->
           <script>
-          
+            
+            
             function addMatchForms() {
               var container = document.getElementById("match-forms-container");
               var numMatches = document.getElementById("match-quantity").value;
@@ -58,7 +68,7 @@
               var html = "";
               for (var i = 1; i <= numMatches; i++) {
                 html += '<div class="match">';
-                html += '<div>Match ' + i + ':</div>';
+                html += '<div><h2>Match ' + i + ':</h2></div>';
                 html += '<label>Select Role:</label>';
                 html += '<label>Tank<input type="radio" name="role-' + i + '" value="T"></label>';
                 html += '<label>Damage<input type="radio" name="role-' + i + '" value="D"></label>';

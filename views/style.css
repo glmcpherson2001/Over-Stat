@@ -390,6 +390,10 @@ footer ul li {
   background-color: rgba(224, 224, 224, 0.97);
   padding: 3vh;
   width: auto;
+  border-radius: 0.7vh;
+  height: auto;
+  max-height: 90%;
+  overflow: auto;
 }
 
 .match {
