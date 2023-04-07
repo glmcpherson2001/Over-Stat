@@ -78,6 +78,7 @@ getRoute('about');
 getRoute('login');
 
 
+getRoute('signup');
 
 
 // Mount the router on a sub-path of the main application
