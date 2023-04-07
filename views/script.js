@@ -1,3 +1,5 @@
+
+// Slideshow code
 let slideIndex = 1;
 showSlides(slideIndex);
 
@@ -38,3 +40,6 @@ let slideInterval = setInterval(function() {
   slideIndex++;
   showSlides(slideIndex);
 }, 10000);
+
+
+// Data form code

@@ -32,113 +32,78 @@
   
 
     <!-- This is where Data form will go-->
-    <div class = "data-form">
-    <form action="">
-      <div class="center">
-        <label>
-          Number of Matches:
-          <input type="number" id="match-quantity" name="match-quantity" min="1" max="20" value="1">
-        </label>
-      </div>
-      <div class = "match">
-      <div>
-        <h2>Match 1:</h2>
-      </div>
-      <div>
-      <label>Select Role:</label>
-        <label>
-          Tank
-          <input type="radio" name="role" id="role-select" value="T">
-          
-        </label>
-        <label>
-          Damage
-          <input type="radio" name="role" id="role-select" value="D">
-          
-        </label>
-        <label>
-          Support
-          <input type="radio" name="role" id="role-select" value="S">
-          
-        </label>
-      </div>
-      <div>
-        <label for="time-input">Enter the time in military format:</label>
-        <input type="time" id="text" name="time">
-      </div>
-      
-
-      <div>
-        <label>Win or Loss:</label>
-        <label>
+    <div class="data-form">
+      <form action="" onsubmit="return processForm()">
+        <div class="center">
           <label>
-            Win
-            <input type="radio" name="win/loss" id="win/loss" value="W">
-          </label>
-          <label>
-            Loss
-            <input type="radio" name="win/loss" id="win/loss" value="L">
+            Number of Matches:
+            <input type="number" id="match-quantity" name="match-quantity" min="1" max="20"  onchange="addMatchForms()">
           </label>
         </div>
+        <div id="match-forms-container">
+          <!-- generate match forms dynamically -->
+          <script>
           
-        </label>
+            function addMatchForms() {
+              var container = document.getElementById("match-forms-container");
+              var numMatches = document.getElementById("match-quantity").value;
+              const submitBtn = document.querySelector('#submit-btn');
 
-  </div>
-<div class="match">
-  <div>
-    <h2>Match 2:</h2>
-  </div>
-  <div>
-  <label>Select Role:</label>
-    <label>
-      Tank
-      <input type="radio" name="role" id="role-select" value="T">
-      
-    </label>
-    <label>
-      Damage
-      <input type="radio" name="role" id="role-select" value="D">
-      
-    </label>
-    <label>
-      Support
-      <input type="radio" name="role" id="role-select" value="S">
-      
-    </label>
-  </div>
-  <div>
-    <label for="time-input">Enter the time in military format:</label>
-    <input type="time" id="text" name="time">
-  </div>
-  
-
-  <div>
-    <label>Win or Loss:</label>
-    <label>
-      <label>
-        Win
-        <input type="radio" name="win/loss" id="win/loss" value="W">
-      </label>
-      <label>
-        Loss
-        <input type="radio" name="win/loss" id="win/loss" value="L">
-      </label>
+              // Hides Submit Button if Matches is 0
+              if (numMatches == 0) {
+                submitBtn.style.display = "none";
+              } else {
+                submitBtn.style.display = "inline";
+              }
+              var html = "";
+              for (var i = 1; i <= numMatches; i++) {
+                html += '<div class="match">';
+                html += '<div>Match ' + i + ':</div>';
+                html += '<label>Select Role:</label>';
+                html += '<label>Tank<input type="radio" name="role-' + i + '" value="T"></label>';
+                html += '<label>Damage<input type="radio" name="role-' + i + '" value="D"></label>';
+                html += '<label>Support<input type="radio" name="role-' + i + '" value="S"></label>';
+                html += '<label for="time-input-' + i + '">Enter the time in military format:</label>';
+                html += '<input type="time" id="time-input-' + i + '" name="time-' + i + '">';
+                html += '<label>Win or Loss:</label>';
+                html += '<label>Win<input type="radio" name="win-loss-' + i + '" value="W"></label>';
+                html += '<label>Loss<input type="radio" name="win-loss-' + i + '" value="L"></label>';
+                html += '</div>';
+              }
+              container.innerHTML = html;
+            }
+          </script>
+        </div>
+        <input type="submit" id="submit-btn" value="Submit" style="display: none;">
+      </form>
     </div>
-      
-    </label>
+    
+    <script>
+      function processForm() {
+  var numMatches = document.getElementById("match-quantity").value;
+  var formData = {};
+  
+  for (var i = 1; i <= numMatches; i++) {
+    var role = document.querySelector('input[name="role-' + i + '"]:checked').value;
+    var time = document.getElementById("time-input-" + i).value;
+    var winLoss = document.querySelector('input[name="win-loss-' + i + '"]:checked').value;
+    
+    console.log("Match " + i + ": role=" + role + ", time=" + time + ", winLoss=" + winLoss);
+    
+    formData["match-" + i] = {
+      "role": role,
+      "time": time,
+      "winLoss": winLoss
+    };
+  }
+  
+  console.log(formData);
+  return formData;
+}
 
-</div>
-</form>
-</div>
 
-<div>
-  <script>
-    import {
-      PlayTimeDataUpdateForm 
-     } from './ui-components';
-     
-     <PlayTimeDataUpdateForm /></script>
-</div>
+    </script>
+
 
   
     <footer>
@@ -157,6 +122,5 @@
     </div>
     </footer>
     
-    <script src="script.js"></script>
   </body>
 </html>
