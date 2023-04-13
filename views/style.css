@@ -407,3 +407,17 @@ footer ul li {
   padding: 1vh;
 }
 /*---------Enter Data END--------------*/
+
+/*---------Login CSS--------------------*/
+.dropdown-menu {
+  display: none;
+}
+
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.username {
+  font-size: 1.5em;
+}
+/*---------Login CSS END--------------------*/

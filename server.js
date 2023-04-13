@@ -1,52 +1,95 @@
 const ejs = require('ejs');
 const express = require('express');
+const session = require('express-session');
 const path = require('path');
-const fs = require('fs');
-const Amplify = require('aws-amplify');
-
-const Auth = Amplify.Amplify.Auth;
+const fs = require('fs');const AmazonCognitoIdentity = require('amazon-cognito-identity-js');
+const crypto = require('crypto');
 const app = express();
 const router = express.Router();
+const AWS = require('aws-sdk');
+const bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: true }));
 
-Amplify.Amplify.configure({
-    Auth:{
-        region: 'us-east-1',
-        userPoolId: 'us-east-1_Qfm3szDxe',
-        userPoolWebClientId: '2k0rrq6aompii0mgelaf8fthat'
-    }
-});
+
+app.use(session({
+  secret: 'mysecretkey',
+  resave: false,
+  saveUninitialized: false
+}));
+
+
+// Authentication
+
+const poolData = {
+  UserPoolId: 'us-east-1_kuKAn64nq',
+  ClientId: '3mauvrb7a0951popnppfnvaplf'
+};
+
+const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
 
 // Sign up function
-async function signUp(username, password, email) {
-    try {
-      const result = await Amplify.Auth.signUp({
-        username,
-        password,
-        attributes: {
-          email,
-        },
-      });
-      console.log('Sign up successful:', result);
-      return result;
-    } catch (error) {
-      console.error('Sign up error:', error);
-      throw error;
-    }
-  };
+function signUp(username, password, email, callback) {
+  const attributeList = [
+    new AmazonCognitoIdentity.CognitoUserAttribute({ Name: 'email', Value: email })
+  ];
 
+  userPool.signUp(username, password, attributeList, null, function(err, result) {
+    if (err) {
+      console.log(err);
+      return callback(err);
+    }
+
+    const cognitoUser = result.user;
+    console.log('User registration successful: ' + cognitoUser.getUsername());
+
+    return callback(null, cognitoUser);
+  });
+}
 
 // Sign in function
-async function signIn(username, password) {
-    try {
-      const result = await Amplify.Auth.signIn(username, password);
-      console.log('Sign in successful:', result);
-      return result;
-    } catch (error) {
-      console.error('Sign in error:', error);
-      throw error;
+function signIn(username, password, callback) {
+  const authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
+    Username: username,
+    Password: password,
+  });
+
+  const cognitoUser = new AmazonCognitoIdentity.CognitoUser({
+    Username: username,
+    Pool: userPool
+  });
+
+  cognitoUser.authenticateUser(authenticationDetails, {
+    onSuccess: function(result) {
+      console.log('Access token: ' + result.getAccessToken().getJwtToken());
+      return callback(null, result.getAccessToken().getJwtToken());
+    },
+    onFailure: function(err) {
+      console.log(err);
+      return callback(err);
     }
-  }
-  
+  });
+}
+
+function confirmUser(username ,confirmationCode, callback) {
+
+  const userData = {
+    Username: username,
+    Pool: userPool
+  };
+
+  const cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+
+  cognitoUser.confirmRegistration(confirmationCode, true, function(err, result) {
+    if (err) {
+      console.log(err);
+      return callback(err);
+    }
+
+    console.log('User confirmation successful: ' + cognitoUser.getUsername());
+
+    return callback(null, result);
+  });
+}
 
 
 app.use(express.static('views'));
@@ -57,9 +100,21 @@ app.set('views', path.join(__dirname, 'views'));
 
 function getRoute(routePath, data) {
     router.get('/'+(routePath), (req, res) => {
+      
+      if(req.session){
+        var currentUser = req.session.currentUser;
+
+        // Initializes data object if not already
+        if(!data){
+          data = {}
+        }
+          data.currentUser = currentUser;
+      }
         res.render(routePath, data); 
+        
     });
     console.log(routePath+"was requested")
+    
 }
 
 getRoute('', {
@@ -77,6 +132,7 @@ getRoute('about');
 
 getRoute('login');
 
+getRoute('confirmation');
 
 getRoute('signup');
 
@@ -87,6 +143,85 @@ app.use('/', router);
 
 app.use('enter_data', router);
 
+
+// app.post functions
+
+app.post('/signin', function(req, res) {
+  // Get the username and password from the request body
+  var username = req.body.username;
+  
+  var password = req.body.password;
+
+
+  signIn(username, password, function(err){
+    if(err){
+      res.status(401).send('Sign-in unsuccessful');
+      console.log(err);
+    } else{
+       // If authentication is successful, set the user session variable
+      req.session.currentUser = { username: username };
+
+      // Return a success response
+      res.redirect('/');
+    }
+  })
+
+ 
+});
+
+app.post('/signup', function(req, res) {
+  // Get the username and password from the request body
+  var username = req.body.username;
+  
+  var password = req.body.password;
+
+  var email = req.body.email;
+
+
+  signUp(username, password, email, function(err){
+    if(err){
+      res.status(401).send('Sign-Up unsuccessful');
+      console.log(err);
+    } else{
+       // If authentication is successful, set the user session variable
+      req.session.currentUser = { username: username };
+
+      // Return a success response
+      res.redirect('/confirmation');
+    }
+  })
+
+ 
+});
+
+app.post('/confirmation', function(req, res) {
+  // Get the username and password from the request body
+    var username = req.session.currentUser.username;
+    var confirmationCode = req.body.con_num;
+  
+
+
+  confirmUser(username, confirmationCode, function(err){
+    if(err){
+      res.status(401).send('Confirmation unsuccessful');
+      console.log(err);
+    } else{
+
+      // Return a success response
+      res.redirect('/')
+    }
+  })
+
+ 
+});
+
+app.get('/signout', function(req, res) {
+  // Remove the currentUser object from the session
+  req.session.currentUser = null;
+
+  // Redirect to the login page
+  res.redirect('/');
+});
 
 
 const port = 8080;
