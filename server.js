@@ -219,7 +219,7 @@ app.get('/signout', function(req, res) {
   // Remove the currentUser object from the session
   req.session.currentUser = null;
 
-  // Redirect to the login page
+  // Redirect to the home page
   res.redirect('/');
 });
 
