@@ -10,6 +10,63 @@ const AWS = require('aws-sdk');
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 
+const mysql = require('mysql');
+const { get } = require('http');
+
+const connection = mysql.createConnection({
+  host     : 'awseb-e-ctbcnicmgw-stack-awsebrdsdatabase-ubpeo1yl4otc.cattbtvevbxg.us-east-1.rds.amazonaws.com',
+  user     : 'overstat',
+  password : 'Computershit198',
+  database : 'ebdb',
+  port: 3306
+});
+
+function getData(username = '', role, row, callback) {
+  let query;
+  if (username.length === 0) {
+    query = `SELECT DATE_FORMAT(match_time, '%H:00') as Hour, AVG(win_loss = 'W') as Win_Rate FROM user_data WHERE player_role = '${role}' GROUP BY EXTRACT(HOUR FROM match_time), player_role ORDER BY AVG(win_loss = 'W') DESC LIMIT 3;`;
+  } else {
+    query = `SELECT DATE_FORMAT(match_time, '%H:00') as Hour, AVG(win_loss = 'W') as Win_Rate FROM user_data WHERE username = '${username}' AND player_role = '${role}' GROUP BY EXTRACT(HOUR FROM match_time), player_role ORDER BY AVG(win_loss = 'W') DESC LIMIT 3;`;
+  }
+  connection.query(query, (error, results, fields) => {
+    if (error) {
+      callback('Cannot get data at the moment', null);
+    } else if (results.length > 0) {
+      const result = results[row - 1];
+      const data = { Hour: result.Hour, Win_Rate: result.Win_Rate };
+      callback(null, data);
+    } else {
+      callback('No results found', null);
+    }
+  });
+
+
+}
+
+function getData(username = '', role, row, callback) {
+  let query;
+  if (username.length === 0) {
+    query = `SELECT DATE_FORMAT(match_time, '%H:00') as Hour, AVG(win_loss = 'W') as Win_Rate FROM user_data WHERE player_role = '${role}' GROUP BY EXTRACT(HOUR FROM match_time), player_role ORDER BY AVG(win_loss = 'W') DESC LIMIT 3;`;
+
+  } else {
+    c
+    query = `SELECT DATE_FORMAT(match_time, '%H:00') as Hour, AVG(win_loss = 'W') as Win_Rate FROM user_data WHERE username = '${username}' AND player_role = '${role}' GROUP BY EXTRACT(HOUR FROM match_time), player_role ORDER BY AVG(win_loss = 'W') DESC LIMIT 3;`;
+  }
+  console.log(query);
+  connection.query(query, (error, results, fields) => {
+    if (error) {
+      callback('Cannot get data at the moment', null);
+    } else if (results.length > 0) {
+      const result = results[row - 1];
+      const data = { Hour: result.Hour, Win_Rate: result.Win_Rate };
+      callback(null, data);
+    } else {
+      callback('No results found', null);
+    }
+  });
+}
+
+
 
 app.use(session({
   secret: 'mysecretkey',
@@ -97,36 +154,62 @@ app.use(express.static('views'));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-
-function getRoute(routePath, data) {
-    router.get('/'+(routePath), (req, res) => {
-      
-      if(req.session){
-        var currentUser = req.session.currentUser;
-
-        // Initializes data object if not already
-        if(!data){
-          data = {}
-        }
-          data.currentUser = currentUser;
-      }
-        res.render(routePath, data); 
-        
-    });
-    console.log(routePath+"was requested")
+function getRoute(routePath, data, requireLogin) {
+  router.get('/'+(routePath), (req, res) => {
     
+    if(req.session){
+      var currentUser = req.session.currentUser;
+
+      // Initializes data object if not already
+      if(!data){
+        data = {}
+      }
+      data.currentUser = currentUser;
+    }
+
+    if(requireLogin){
+      if(!currentUser){
+        // Store the original URL in the session
+        req.session.originalUrl = req.originalUrl;
+        res.render('login');
+      } else {
+        // If the user is logged in, clear the original URL stored in the session
+        req.session.originalUrl = null;
+        res.render(routePath, data);
+      }
+    } else {
+      console.log('User is logged in');
+      res.render(routePath, data);
+    } 
+  });
 }
 
+getData('', 'T', 1, (error, data) => {
+  if (error) {
+    return data.Hour
+  } else {
+    return "Could not get Data"
+  }
+});
+
 getRoute('', {
-    damageWinRate : '2:00pm',
-    tankWinRate : '1:00pm',
+    damageWinRate : 'Bruh',
+    tankWinRate : (getData('', 'T', 1, (error, data) => {
+      if (error) {
+        return 
+      } else {
+        return data.Hour
+      }
+    })
+    ),
     supportWinRate :'3:00am'
     }
 );
 
-getRoute('enter_data');
 
-getRoute('your_data');
+
+
+getRoute('your_data', {}, true);
 
 getRoute('about');
 
@@ -136,12 +219,12 @@ getRoute('confirmation');
 
 getRoute('signup');
 
+getRoute('enter_data',{}, true);
+
 
 // Mount the router on a sub-path of the main application
 app.use('/', router);
 
-
-app.use('enter_data', router);
 
 
 // app.post functions
@@ -162,12 +245,37 @@ app.post('/signin', function(req, res) {
       req.session.currentUser = { username: username };
 
       // Return a success response
-      res.redirect('/');
+      if(req.session.originalUrl) {
+        res.redirect(req.session.originalUrl);
+      } else {
+        // If there is no original URL stored in the session, redirect the user to the home page
+        res.redirect('/');
+      }
     }
   })
 
  
 });
+
+
+app.post('/upload_data', function(req, res) {
+  var formData = req.body.formData;
+  var username = req.session.currentUser.username;
+
+  for (var i = 1; i <= Object.keys(formData).length; i++) {
+    var role = formData["match-" + i].role;
+    var time = formData["match-" + i].time;
+    var winLoss = formData["match-" + i].winLoss;
+
+    connection.query('INSERT INTO user_data (username, match_time, player_role, win_loss) VALUES (?, ?, ?, ?)', [username, time, role, winLoss], function(error, results, fields) {
+      if (error) throw error;
+      console.log(username + " Inserted data into database");
+    });
+  }
+  res.redirect('your_data');
+});
+
+
 
 app.post('/signup', function(req, res) {
   // Get the username and password from the request body
