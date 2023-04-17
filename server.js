@@ -184,14 +184,6 @@ function getRoute(routePath, data, requireLogin) {
   });
 }
 
-getData('', 'T', 1, (error, data) => {
-  if (error) {
-    return data.Hour
-  } else {
-    return "Could not get Data"
-  }
-});
-
 getRoute('', {
     damageWinRate : 'Bruh',
     tankWinRate : (getData('', 'T', 1, (error, data) => {
