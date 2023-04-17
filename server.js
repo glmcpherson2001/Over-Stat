@@ -185,8 +185,6 @@ function getRoute(routePath, requireLogin, callback) {
   });
 }
 
-
-
 getRoute('your_data', true, function(data){
 
   var username = data.currentUser;
@@ -222,6 +220,49 @@ getRoute('your_data', true, function(data){
   console.log(data);
 
 });
+
+getRoute('', false, function(data){
+
+  var username = '';
+
+  getData(username, 'T')
+
+  .then(Hour => {
+   tankWinRate = Hour[0].Hour;
+   console.log(Hour);
+    console.log('Tank Ran');
+    return getData(username, 'D', 1);
+  })
+
+  .then(Hour=> {
+    damageWinRate = Hour[0].Hour;
+    console.log('Damage Ran');
+    return getData(username, 'S', 1);
+  })
+
+  .then(Hour => {
+   supportWinRate = Hour[0].Hour;
+   
+   console.log('Support Ran');
+  })
+
+  .catch(error => {
+    console.error(`error: ${error}`);
+  });
+
+  data.tankWinRate = tankWinRate;
+  data.damageWinRate = damageWinRate;
+  data.supportWinRate = supportWinRate;
+  console.log(data);
+
+});
+
+getRoute('about');
+
+getRoute('enter_data');
+
+
+
 
 
 
