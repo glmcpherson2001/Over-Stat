@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
     <link rel="shortcut icon" type="image/png" href="images/Overstat Logo.png">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>Enter Data</title>
     <style>
         header{
@@ -55,7 +56,7 @@
 
     <!-- This is where Data form will go-->
     <div class="data-form">
-      <form action="" onsubmit="return processForm()">
+      <form action="post" onsubmit="return processForm()">
         <div class="center">
           <label>
             Number of Matches:
@@ -120,8 +121,18 @@
     };
   }
   
-  console.log(formData);
-  return formData;
+  $.ajax({
+    type: "POST",
+    url: "/upload_data",
+    data: {formData: formData},
+    success: function(data) {
+      console.log("Form data inserted successfully!");
+      console.log(data);
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+      console.log("Error inserting form data: " + errorThrown);
+    }
+  });
 }
 
 
