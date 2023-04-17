@@ -28,7 +28,10 @@ header nav ul {
   display: flex;
   list-style: none;
   justify-content: flex-start;
+  align-items: center;
   padding: 0 1vh;
+  height: 100%;
+  margin: 0;
 }
 
 header nav ul li {
@@ -37,6 +40,16 @@ header nav ul li {
   font-weight: 600;
   padding-right: 2vh;
   font-size: large;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.logo {
+}
+
+.logo img {
+  height: 5vh;
+  vertical-align: middle;
 }
 
 div.login {
@@ -368,6 +381,7 @@ footer ul li {
 
 .left {
   float: left;
+  height: 100%;
 }
 
 .right {

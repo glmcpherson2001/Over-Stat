@@ -21,7 +21,7 @@ const connection = mysql.createConnection({
   port: 3306
 });
 
-function getData(username = '', role, row, callback) {
+/* function getData(username = '', role, row, callback) {
   let query;
   if (username.length === 0) {
     query = `SELECT DATE_FORMAT(match_time, '%H:00') as Hour, AVG(win_loss = 'W') as Win_Rate FROM user_data WHERE player_role = '${role}' GROUP BY EXTRACT(HOUR FROM match_time), player_role ORDER BY AVG(win_loss = 'W') DESC LIMIT 3;`;
@@ -41,30 +41,32 @@ function getData(username = '', role, row, callback) {
   });
 
 
-}
+} */
 
-function getData(username = '', role, row, callback) {
+function getData(username = '', role) {
   let query;
   if (username.length === 0) {
     query = `SELECT DATE_FORMAT(match_time, '%H:00') as Hour, AVG(win_loss = 'W') as Win_Rate FROM user_data WHERE player_role = '${role}' GROUP BY EXTRACT(HOUR FROM match_time), player_role ORDER BY AVG(win_loss = 'W') DESC LIMIT 3;`;
-
   } else {
-    c
     query = `SELECT DATE_FORMAT(match_time, '%H:00') as Hour, AVG(win_loss = 'W') as Win_Rate FROM user_data WHERE username = '${username}' AND player_role = '${role}' GROUP BY EXTRACT(HOUR FROM match_time), player_role ORDER BY AVG(win_loss = 'W') DESC LIMIT 3;`;
   }
-  console.log(query);
-  connection.query(query, (error, results, fields) => {
-    if (error) {
-      callback('Cannot get data at the moment', null);
-    } else if (results.length > 0) {
-      const result = results[row - 1];
-      const data = { Hour: result.Hour, Win_Rate: result.Win_Rate };
-      callback(null, data);
-    } else {
-      callback('No results found', null);
-    }
+
+  return new Promise((resolve, reject) => {
+    connection.query(query, (error, results, fields) => {
+      if (error) {
+        resolve('Cannot get data at the moment');
+      } else if (results.length > 0) {
+        resolve(results);
+      } else {
+        resolve('No results found');
+      }
+    });
   });
 }
+
+
+
+
 
 
 
@@ -154,64 +156,73 @@ app.use(express.static('views'));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-function getRoute(routePath, data, requireLogin) {
+function getRoute(routePath, requireLogin, callback) {
   router.get('/'+(routePath), (req, res) => {
+    let currentUser;
+    let data = {};
     
+    // Check if there's a current user session
     if(req.session){
-      var currentUser = req.session.currentUser;
-
-      // Initializes data object if not already
-      if(!data){
-        data = {}
-      }
+      currentUser = req.session.currentUser;
       data.currentUser = currentUser;
     }
 
-    if(requireLogin){
-      if(!currentUser){
-        // Store the original URL in the session
-        req.session.originalUrl = req.originalUrl;
-        res.render('login');
-      } else {
-        // If the user is logged in, clear the original URL stored in the session
-        req.session.originalUrl = null;
-        res.render(routePath, data);
-      }
+    // Check if login is required and user is logged in
+    if((requireLogin && !currentUser)){
+      // Store the original URL in the session
+      req.session.originalUrl = req.originalUrl;
+      res.render('login');
     } else {
-      console.log('User is logged in');
+      // If the user is logged in, clear the original URL stored in the session
+      req.session.originalUrl = null;
+      // Check if a callback function was passed
+      if (callback) {
+        // Call the callback function to define data to be passed to the function
+        callback(data)
+      }
       res.render(routePath, data);
     } 
   });
 }
 
-getRoute('', {
-    damageWinRate : 'Bruh',
-    tankWinRate : (getData('', 'T', 1, (error, data) => {
-      if (error) {
-        return 
-      } else {
-        return data.Hour
-      }
-    })
-    ),
-    supportWinRate :'3:00am'
-    }
-);
 
 
+getRoute('your_data', true, function(data){
 
+  var username = data.currentUser;
 
-getRoute('your_data', {}, true);
+  getData(username, 'T')
 
-getRoute('about');
+  .then(Hour => {
+   tankWinRate = Hour[0].Hour;
+   console.log(Hour);
+    console.log('Tank Ran');
+    return getData(username, 'D', 1);
+  })
 
-getRoute('login');
+  .then(Hour=> {
+    damageWinRate = Hour[0].Hour;
+    console.log('Damage Ran');
+    return getData(username, 'S', 1);
+  })
 
-getRoute('confirmation');
+  .then(Hour => {
+   supportWinRate = Hour[0].Hour;
+   
+   console.log('Support Ran');
+  })
 
-getRoute('signup');
+  .catch(error => {
+    console.error(`error: ${error}`);
+  });
 
-getRoute('enter_data',{}, true);
+  data.tankWinRate = tankWinRate;
+  data.damageWinRate = damageWinRate;
+  data.supportWinRate = supportWinRate;
+  console.log(data);
+
+});
+
 
 
 // Mount the router on a sub-path of the main application
