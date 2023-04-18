@@ -150,7 +150,7 @@ span.psw {
           <nav>
             <div class="left">
               <ul>
-                <li><a class="logo" href="/">Over-Stat</a></li>
+                <li class="logo"><img src="images/Overstat Logo.png" href="/"></li>
                 <li><a href="/">Home</a></li>
                 <li><a href="enter_data">Enter Data</a></li>
                 <li><a href="your_data">Your Data</a></li>
@@ -170,7 +170,7 @@ span.psw {
                   </div>
                 <% } else { %>
                   <a href="/login">Login</a>
-                  <% currentUser = null; %>
+                  <% if(typeof currentUser !== 'undefined'){currentUser = null;}%>
                 <% } %>
                 
               </ul>
