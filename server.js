@@ -54,11 +54,12 @@ function getData(username = '', role) {
   return new Promise((resolve, reject) => {
     connection.query(query, (error, results, fields) => {
       if (error) {
-        resolve('Cannot get data at the moment');
-      } else if (results.length > 0) {
-        resolve(results);
+        resolve([{Hour: 'Cannot get data at the moment'}]);
       } else {
-        resolve('No results found');
+        while (results.length < 3) {
+          results.push({Hour: 'No Results found', Win_Rate: ''});
+        }
+        resolve(results);
       }
     });
   });
@@ -157,18 +158,18 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 function getRoute(routePath, requireLogin, callback) {
-  router.get('/'+(routePath), (req, res) => {
+  router.get('/' + routePath, async (req, res) => {
     let currentUser;
     let data = {};
-    
+
     // Check if there's a current user session
-    if(req.session){
+    if (req.session) {
       currentUser = req.session.currentUser;
       data.currentUser = currentUser;
     }
 
     // Check if login is required and user is logged in
-    if((requireLogin && !currentUser)){
+    if (requireLogin && !currentUser) {
       // Store the original URL in the session
       req.session.originalUrl = req.originalUrl;
       res.render('login');
@@ -177,83 +178,79 @@ function getRoute(routePath, requireLogin, callback) {
       req.session.originalUrl = null;
       // Check if a callback function was passed
       if (callback) {
-        // Call the callback function to define data to be passed to the function
-        callback(data)
+        // Use a Promise to wait for the callback function to complete
+        await new Promise((resolve) => {
+          // Call the callback function to define data to be passed to the function
+          callback(data, resolve);
+        });
       }
       res.render(routePath, data);
-    } 
+    }
   });
 }
 
-getRoute('your_data', true, function(data){
+getRoute('your_data', true, (data, resolve) => {
 
-  var username = data.currentUser;
+  var username = data.currentUser.username;
 
   getData(username, 'T')
+    .then(Hour => {
+      data.tankWinRate = Hour[0].Hour;
+      data.tankWinRate2 = Hour[1].Hour;
+      data.tankWinRate3 = Hour[2].Hour;
+      //data.tankWinRate = personalTankWinRate;
+      return getData(username, 'D');
+    })
+    .then(Hour=> {
+      console.log(Hour);
+      data.damageWinRate = Hour[0].Hour;
+      data.damageWinRate2 = Hour[1].Hour;
+      data.damageWinRate3 = Hour[2].Hour;
 
-  .then(Hour => {
-   tankWinRate = Hour[0].Hour;
-   console.log(Hour);
-    console.log('Tank Ran');
-    return getData(username, 'D', 1);
-  })
+      //data.damageWinRate = personalDamageWinRate;
+      return getData(username, 'S');
+    })
+    .then(Hour => {
+      console.log(Hour);
+      data.supportWinRate = Hour[0].Hour;
+      data.supportWinRate2 = Hour[1].Hour;
+      data.supportWinRate3 = Hour[2].Hour;
 
-  .then(Hour=> {
-    damageWinRate = Hour[0].Hour;
-    console.log('Damage Ran');
-    return getData(username, 'S', 1);
-  })
-
-  .then(Hour => {
-   supportWinRate = Hour[0].Hour;
-   
-   console.log('Support Ran');
-  })
-
-  .catch(error => {
-    console.error(`error: ${error}`);
-  });
-
-  data.tankWinRate = tankWinRate;
-  data.damageWinRate = damageWinRate;
-  data.supportWinRate = supportWinRate;
-  console.log(data);
-
+      //data.supportWinRate = personalSupportWinRate;
+      resolve()
+      //console.log(data);
+    })
+    .catch(error => {
+      console.error(`error: ${error}`);
+    });
 });
 
-getRoute('', false, function(data){
+getRoute('', false, (data, resolve) => {
 
   var username = '';
 
   getData(username, 'T')
+    .then(Hour => {
+      var tankWinRate = Hour[0].Hour;
+      data.tankWinRate = tankWinRate;
+      return getData(username, 'D');
+    })
+    .then(Hour=> {
+      var damageWinRate = Hour[0].Hour;
+      data.damageWinRate = damageWinRate;
+      return getData(username, 'S');
+    })
+    .then(Hour => {
+      var supportWinRate = Hour[0].Hour;
+      data.supportWinRate = supportWinRate;
+      console.log('Support Ran');
+      resolve();
+    })
+    .catch(error => {
+      console.error(`error: ${error}`);
+    });
 
-  .then(Hour => {
-   tankWinRate = Hour[0].Hour;
-   console.log(Hour);
-    console.log('Tank Ran');
-    return getData(username, 'D', 1);
-  })
-
-  .then(Hour=> {
-    damageWinRate = Hour[0].Hour;
-    console.log('Damage Ran');
-    return getData(username, 'S', 1);
-  })
-
-  .then(Hour => {
-   supportWinRate = Hour[0].Hour;
-   
-   console.log('Support Ran');
-  })
-
-  .catch(error => {
-    console.error(`error: ${error}`);
-  });
-
-  data.tankWinRate = tankWinRate;
-  data.damageWinRate = damageWinRate;
-  data.supportWinRate = supportWinRate;
-  console.log(data);
+  
 
 });
 
