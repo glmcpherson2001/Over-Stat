@@ -54,6 +54,7 @@ function getData(username = '', role) {
   return new Promise((resolve, reject) => {
     connection.query(query, (error, results, fields) => {
       if (error) {
+        console.log(error);
         resolve([{Hour: 'Cannot get data at the moment'}]);
       } else {
         while (results.length < 3) {
