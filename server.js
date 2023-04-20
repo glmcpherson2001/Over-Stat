@@ -261,6 +261,8 @@ getRoute('enter_data');
 
 getRoute('login');
 
+getRoute('signup')
+
 
 
 

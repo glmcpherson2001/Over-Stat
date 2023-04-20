@@ -10,7 +10,7 @@
       type="image/png"
       href="images/Overstat Logo.png"
     />
-    <title>login</title>
+    <title>Sign Up</title>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link
@@ -19,6 +19,7 @@
     />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script>
+      // Uploads data
       $("#signup-form").submit(function (event) {
         // Prevent the default form submission behavior
         event.preventDefault();
@@ -268,10 +269,22 @@
               required
             />
             <div
-              id="password-error"
+              id="password-no-match"
               style="display: none; color: red; font-size: 3em"
             >
               Passwords do not match
+            </div>
+            <div
+              id="password-validation"
+              style="display: none; color: red; font-size: 3em"
+            >
+              Password does not meet requiements:
+              <ol>
+                <li>Contain 1 Number</li>
+                <li>Contain 1 special character</li>
+                <li>Contain 1 uppercase letter</li>
+                <li>Contain 1 lowercase letter</li>
+              </ol>
             </div>
 
             <button type="submit" id="submit" disabled>Sign Up</button>
@@ -285,15 +298,32 @@
         const password = document.getElementById("password");
         const confirmPassword = document.getElementById("confirm-password");
         const submitButton = document.getElementById("submit");
-        const passwordError = document.getElementById("password-error");
+        const passwordNoMatch = document.getElementById("password-no-match");
+        const passwordValidation = document.getElementById(
+          "password-validation"
+        );
+
+        password.addEventListener("input", () => {
+          const passwordValue = password.value;
+          const regex =
+            /(?=[A-Za-z0-9@#$%^&+!=]+$)^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@#$%^&+!=])(?=.{8,}).*$/;
+          console.log(regex.test(passwordValue));
+          if (regex.test(passwordValue)) {
+            passwordValidation.style.display = "none";
+            submitButton.disabled = false;
+          } else {
+            passwordValidation.style.display = "block";
+            submitButton.disabled = true;
+          }
+        });
 
         confirmPassword.addEventListener("input", () => {
-          if (password.value === confirmPassword.value) {
-            submitButton.disabled = false;
-            passwordError.style.display = "none";
-          } else {
+          if (confirmPassword.value !== password.value) {
+            passwordNoMatch.style.display = "block";
             submitButton.disabled = true;
-            passwordError.style.display = "block";
+          } else {
+            passwordNoMatch.style.display = "none";
+            submitButton.disabled = false;
           }
         });
       });
