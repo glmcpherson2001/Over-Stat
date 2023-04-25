@@ -56,7 +56,7 @@
 
     <!-- This is where Data form will go-->
     <div class="data-form">
-      <form action="" class="form1" onsubmit="return processForm()">
+      <form id="enter_data_form" class="form1" onsubmit="return processForm() ">
         <div class="center">
           <label>
             Number of Matches:
@@ -96,6 +96,18 @@
               }
               container.innerHTML = html;
             }
+            const form = document.getElementById('enter_data_form');
+
+           // Add an event listener to the form submit event
+           form.addEventListener('submit', function(event) {
+             // Prevent the default form submission behavior
+             event.preventDefault();
+
+             // Your form submission logic here
+
+             form.reset();
+           });
+
           </script>
         </div>
         <input type="submit" id="submit-btn" value="Submit" style="display: none;">

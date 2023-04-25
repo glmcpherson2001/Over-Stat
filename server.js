@@ -14,7 +14,7 @@ const mysql = require('mysql');
 const { get } = require('http');
 
 const connection = mysql.createConnection({
-  host     : 'awseb-e-ctbcnicmgw-stack-awsebrdsdatabase-ubpeo1yl4otc.cattbtvevbxg.us-east-1.rds.amazonaws.com',
+  host     : 'awseb-e-ctbcnicmgw-stack-awsebrdsdatabase-mriooa0cfa1j.cattbtvevbxg.us-east-1.rds.amazonaws.com',
   user     : 'overstat',
   password : 'Computershit198',
   database : 'ebdb',
