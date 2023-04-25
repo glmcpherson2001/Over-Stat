@@ -257,7 +257,7 @@ getRoute('', false, (data, resolve) => {
 
 getRoute('about');
 
-getRoute('enter_data');
+getRoute('enter_data', true);
 
 getRoute('login');
 
